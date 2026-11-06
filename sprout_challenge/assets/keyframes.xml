@@ -1,0 +1,15 @@
+<mujoco>
+  <!-- Joint order per leg: thigh (abduction), leg (hip fore-aft), shin (knee); legs BR, BL, FL, FR.
+       home: the crouched default pose the TD3 walk used (knees 0.9 rad, hips -0.45 rad); torso settles ~0.845 m.
+       stand: straight legs, torso ~0.95 m.
+       footstand: on the hind feet, body pitched 80 degrees nose-up (quat = rotation of -80 deg about y), hind hips
+       -1.47 rad, hind knees 0.3, front legs tucked; torso centre ~1.25 m, centre of mass over the hind feet.
+       Found by forward kinematics; the hind hip limit is -1.57, so ~90 degrees is the most upright possible. -->
+  <keyframe>
+    <key name="home" qpos="0 0 0.86 1 0 0 0  0 -0.45 0.9  0 -0.45 0.9  0 -0.45 0.9  0 -0.45 0.9"
+      ctrl="0 -0.45 0.9  0 -0.45 0.9  0 -0.45 0.9  0 -0.45 0.9"/>
+    <key name="stand" qpos="0 0 0.96 1 0 0 0  0 0 0  0 0 0  0 0 0  0 0 0" ctrl="0 0 0  0 0 0  0 0 0  0 0 0"/>
+    <key name="footstand" qpos="0 0 1.26 0.7660 0 -0.6428 0  0 -1.47 0.3  0 -1.47 0.3  0 -1.2 1.5  0 -1.2 1.5"
+      ctrl="0 -1.47 0.3  0 -1.47 0.3  0 -1.2 1.5  0 -1.2 1.5"/>
+  </keyframe>
+</mujoco>

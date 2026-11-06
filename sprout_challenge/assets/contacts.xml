@@ -1,0 +1,27 @@
+<mujoco>
+  <!-- Contact sensors (data="found": 1 when touching): feet, torso and leg parts against the floor, and leg parts
+       against the torso (self_collision). Included by every scene, after the floor. -->
+  <sensor>
+    <contact name="back_right_foot_floor_found" geom1="back_right_foot" geom2="floor" reduce="mindist" num="1" data="found"/>
+    <contact name="back_left_foot_floor_found" geom1="back_left_foot" geom2="floor" reduce="mindist" num="1" data="found"/>
+    <contact name="front_left_foot_floor_found" geom1="front_left_foot" geom2="floor" reduce="mindist" num="1" data="found"/>
+    <contact name="front_right_foot_floor_found" geom1="front_right_foot" geom2="floor" reduce="mindist" num="1" data="found"/>
+    <contact name="torso_floor_found" geom1="torso" geom2="floor" reduce="mindist" num="1" data="found"/>
+    <contact name="back_right_shin_floor_found" geom1="back_right_shin_col" geom2="floor" reduce="mindist" num="1" data="found"/>
+    <contact name="back_left_shin_floor_found" geom1="back_left_shin_col" geom2="floor" reduce="mindist" num="1" data="found"/>
+    <contact name="front_left_shin_floor_found" geom1="front_left_shin_col" geom2="floor" reduce="mindist" num="1" data="found"/>
+    <contact name="front_right_shin_floor_found" geom1="front_right_shin_col" geom2="floor" reduce="mindist" num="1" data="found"/>
+    <contact name="back_right_leg_floor_found" geom1="back_right_leg_col" geom2="floor" reduce="mindist" num="1" data="found"/>
+    <contact name="back_left_leg_floor_found" geom1="back_left_leg_col" geom2="floor" reduce="mindist" num="1" data="found"/>
+    <contact name="front_left_leg_floor_found" geom1="front_left_leg_col" geom2="floor" reduce="mindist" num="1" data="found"/>
+    <contact name="front_right_leg_floor_found" geom1="front_right_leg_col" geom2="floor" reduce="mindist" num="1" data="found"/>
+    <contact name="back_right_leg_torso_found" geom1="back_right_leg_body" geom2="torso_body" reduce="mindist" num="1" data="found"/>
+    <contact name="back_right_shin_torso_found" geom1="back_right_shin_body" geom2="torso_body" reduce="mindist" num="1" data="found"/>
+    <contact name="back_left_leg_torso_found" geom1="back_left_leg_body" geom2="torso_body" reduce="mindist" num="1" data="found"/>
+    <contact name="back_left_shin_torso_found" geom1="back_left_shin_body" geom2="torso_body" reduce="mindist" num="1" data="found"/>
+    <contact name="front_left_leg_torso_found" geom1="front_left_leg_body" geom2="torso_body" reduce="mindist" num="1" data="found"/>
+    <contact name="front_left_shin_torso_found" geom1="front_left_shin_body" geom2="torso_body" reduce="mindist" num="1" data="found"/>
+    <contact name="front_right_leg_torso_found" geom1="front_right_leg_body" geom2="torso_body" reduce="mindist" num="1" data="found"/>
+    <contact name="front_right_shin_torso_found" geom1="front_right_shin_body" geom2="torso_body" reduce="mindist" num="1" data="found"/>
+  </sensor>
+</mujoco>

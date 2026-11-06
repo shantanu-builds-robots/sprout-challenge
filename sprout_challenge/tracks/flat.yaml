@@ -1,0 +1,5 @@
+# A flat 30 m straight: get walking first.
+name: flat
+width: 6
+sections:
+  - {type: flat, length: 32}

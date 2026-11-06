@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sprout-challenge"
+version = "0.1.0"
+description = "Write a controller that gets Sprout, a 28 kg quadruped, down an obstacle course fastest."
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.10"
+dependencies = ["mujoco>=3.2,<3.4", "numpy", "pyyaml"]
+
+[project.optional-dependencies]
+video = ["imageio>=2.30", "imageio-ffmpeg"]
+dev = ["pytest"]
+
+[tool.setuptools.packages.find]
+include = ["sprout_challenge*"]
+
+[tool.setuptools.package-data]
+sprout_challenge = ["assets/*.xml", "assets/meshes/*.STL", "tracks/*.yaml"]
+
+[tool.pytest.ini_options]
+markers = ["slow: runs the baseline over the whole practice track (~15 s)"]

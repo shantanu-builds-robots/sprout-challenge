@@ -1,0 +1,22 @@
+# The practice track: one of every section the competition uses, getting harder towards the finish.
+# The competition arena is built from the same section types, in a different order and sizes, and stays secret
+# until results are announced. Make your own variations with: python -m sprout_challenge.track --seed 3
+name: practice
+width: 6
+sections:
+  - {type: flat, length: 4}
+  - {type: rough, length: 6, height: 0.05, seed: 1}
+  - {type: flat, length: 1}
+  - {type: stairs, steps: 4, rise: 0.08, tread: 0.5, landing: 2}
+  - {type: flat, length: 1.5}
+  - {type: hurdles, heights: [0.06, 0.09, 0.12, 0.15], spacing: 1.5, thickness: 0.1}
+  - {type: flat, length: 1}
+  - {type: ramp, rise: 0.55, run: 3.5, top: 1}
+  - {type: flat, length: 1}
+  - {type: bridge, length: 6, width: 1.0, height: 0.2, ramp: 1}
+  - {type: flat, length: 1}
+  # The track splits: a 40 cm barrier on the left (and across the centreline), a 2.5 m bypass lane on the right.
+  # Clear the barrier without touching it for 5 s off your finish time, or go around for no bonus.
+  - {type: barrier, height: 0.4, depth: 0.3, run_in: 3, run_out: 3, side: left, bypass: 2.5, bonus: 5}
+  - {type: waves, length: 4, amplitude: 0.12}
+  - {type: flat, length: 4}

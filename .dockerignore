@@ -1,0 +1,6 @@
+.venv
+results
+videos
+**/__pycache__
+*.mp4
+arena*.yaml
