@@ -25,6 +25,7 @@ from pathlib import Path
 import mujoco
 import numpy as np
 
+from . import look
 from .track import BASE, RES, START_X, Track
 
 ASSETS = Path(__file__).resolve().parent / "assets"
@@ -76,7 +77,7 @@ class Observation:
     last_action: np.ndarray     # (12,) the joint targets applied last step
 
 
-def _scene_xml(track: Track, nrow: int, ncol: int, hmin: float, hrange: float) -> str:
+def _scene_xml(track: Track, nrow: int, ncol: int, hmin: float, hrange: float, tex_hw: tuple) -> str:
     robot = (ASSETS / "robot.xml").read_text()
     robot = robot.replace('meshdir="meshes"', f'meshdir="{ASSETS / "meshes"}"')
     robot = robot[:robot.rindex("</mujoco>")]
@@ -93,12 +94,15 @@ def _scene_xml(track: Track, nrow: int, ncol: int, hmin: float, hrange: float) -
     <texture type="2d" name="ground" builtin="checker" mark="edge" rgb1="0.2 0.3 0.4" rgb2="0.1 0.2 0.3"
       markrgb="0.8 0.8 0.8" width="300" height="300"/>
     <material name="ground" texture="ground" texuniform="true" texrepeat="2 2" reflectance="0.1"/>
+    <!-- Section colours (look.py), painted into this texture's pixels after loading. -->
+    <texture name="paint" type="2d" builtin="flat" rgb1="1 1 1" width="{tex_hw[1]}" height="{tex_hw[0]}"/>
+    <material name="track" texture="paint" texuniform="false" texrepeat="1 1" specular="0.2" shininess="0.3"/>
     <material name="line" rgba="1 1 1 1" emission="0.5"/>
     <hfield name="track" nrow="{nrow}" ncol="{ncol}" size="{track.length / 2} {track.width / 2} {hrange} {BASE}"/>
   </asset>
   <worldbody>
     <light pos="{track.length / 2} 0 20" dir="0 0 -1" directional="true" castshadow="true"/>
-    <geom name="floor" type="hfield" hfield="track" pos="{track.length / 2} 0 {hmin}" material="ground"
+    <geom name="floor" type="hfield" hfield="track" pos="{track.length / 2} 0 {hmin}" material="track"
       contype="1" conaffinity="0"/>
     <geom name="start_line" type="box" pos="{START_X} 0 0.003" size="0.05 {track.width / 2} 0.002" material="line"
       contype="0" conaffinity="0"/>
@@ -121,8 +125,12 @@ class Sim:
         hmin = min(float(h.min()), 0.0)
         hrange = max(float(h.max()) - hmin, 0.01)
         nrow, ncol = h.shape
-        self.model = mujoco.MjModel.from_xml_string(_scene_xml(track, nrow, ncol, hmin, hrange))
+        paint = look.texture(track)
+        self.model = mujoco.MjModel.from_xml_string(_scene_xml(track, nrow, ncol, hmin, hrange, paint.shape[:2]))
         self.model.hfield_data[:] = ((h - hmin) / hrange).ravel()
+        t = self.model.texture("paint").id
+        a, n = self.model.tex_adr[t], paint.size
+        self.model.tex_data[a:a + n] = paint[::-1].ravel()       # MuJoCo's first texture row is the far (+y) edge
         self.model.opt.timestep = SIM_DT
         self.data = mujoco.MjData(self.model)
         m = self.model
