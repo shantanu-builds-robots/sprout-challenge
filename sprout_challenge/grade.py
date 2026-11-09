@@ -11,7 +11,10 @@ finish beats any non-finish. The entry's score is its median run, so one lucky o
 Official grading (scripts/grade_all.sh) uses --stdin: the track, seed, run count and a one-time key arrive as
 JSON on standard input, so the submission, which runs in the same container, never sees them in a file or on a
 command line. The result is printed signed with the key (HMAC-SHA256) and checked outside the container with
---verify, so a submission cannot forge it.
+--verify, so a submission cannot forge it. Two more guards apply only there: the grader makes itself non-dumpable,
+so the submission (same user, same container) cannot open its memory, stdin or stdout through /proc; and between
+runs it kills every leftover process and empties /tmp and /dev/shm, so nothing a submission saw on one run
+(the secret arena included) carries over to the next.
 """
 from __future__ import annotations
 
@@ -20,6 +23,8 @@ import hashlib
 import hmac
 import json
 import os
+import shutil
+import signal
 import sys
 from pathlib import Path
 
@@ -34,9 +39,41 @@ def run_key(r: dict):
     return (0, r["score_s"], 0.0) if r["outcome"] == "finished" else (1, 0.0, -r["distance_m"])
 
 
-def grade(submission, track: Track, runs=5, seed=1000, max_time=180.0, budget=0.02, log=print, quiet=False) -> dict:
+def _lock_down():
+    """Official grading only: no other process of this user may read our memory or file descriptors via /proc."""
+    import ctypes
+    if ctypes.CDLL(None).prctl(4, 0, 0, 0, 0) != 0:             # PR_SET_DUMPABLE = 0
+        raise OSError("could not make the grader non-dumpable")
+
+
+def _sweep():
+    """Official grading only, inside the container where the grader is PID 1: kill every other process (stray
+    children, daemons a submission started), reap them, and empty the writable dirs, so runs share nothing."""
+    if os.getpid() != 1:
+        raise RuntimeError("isolated grading expects to run as PID 1 inside the grading container")
+    import warnings
+    warnings.filterwarnings("ignore", message="resource_tracker")    # it is killed too and relaunches itself
+    try:
+        os.kill(-1, signal.SIGKILL)                               # every process we can signal, except ourselves
+    except ProcessLookupError:
+        pass
+    while True:
+        try:
+            if os.waitpid(-1, os.WNOHANG)[0] == 0:
+                break
+        except ChildProcessError:
+            break
+    for d in ("/tmp", "/dev/shm"):
+        for p in Path(d).glob("*") if Path(d).is_dir() else []:
+            shutil.rmtree(p, ignore_errors=True) if p.is_dir() and not p.is_symlink() else p.unlink(missing_ok=True)
+
+
+def grade(submission, track: Track, runs=5, seed=1000, max_time=180.0, budget=0.02, log=print, quiet=False,
+          isolate=False) -> dict:
     results = []
     for i in range(runs):
+        if isolate:
+            _sweep()
         r = run(submission, track, seed=seed + i, randomize=True, max_time=max_time, budget=budget,
                 quiet=quiet).to_dict()
         results.append(r)
@@ -87,12 +124,14 @@ def main():
         return
 
     if a.stdin:
+        _lock_down()                                              # before the key and the track are read
         cfg = json.loads(sys.stdin.read())
         track = Track.from_yaml(cfg["track"])
         key, seed, runs = cfg["key"], int(cfg["seed"]), int(cfg.get("runs", 5))
         log = lambda m: print(m, file=sys.stderr, flush=True)       # noqa: E731
         log(f"{Path(a.submission).name} on {track.name} ({track.finish_x - 1.0:.1f} m), {runs} runs")
-        res = grade(a.submission, track, runs, seed, a.max_time, a.budget, log=log, quiet=True)
+        res = grade(a.submission, track, runs, seed, a.max_time, a.budget, log=log, quiet=True, isolate=True)
+        _sweep()
         print(MARK + json.dumps({"result": res, "mac": _mac(key, res)}), flush=True)
         return
 

@@ -29,7 +29,8 @@ def table(results: list[dict]) -> str:
         res = f"**{s['score_s']:.2f} s**" if s["finished"] else f"{s['outcome']}, {s['distance_m']:.1f} m"
         fin = f"{s['time_s']:.2f} s" if s["finished"] else "-"
         bonus = f"-{s['bonus_s']:g} s" if s["finished"] and s["bonus_s"] else "-"
-        errs = sorted({x["error"].strip().splitlines()[-1] for x in r["runs"] if x.get("error")})
+        errs = sorted({x["error"].strip().splitlines()[-1].replace("|", "/").replace("`", "'")
+                       for x in r["runs"] if x.get("error")})
         rows.append(f"| {i} | {r['submission']} | {res} | {fin} | {bonus} | {r['finishes']}/{len(r['runs'])} "
                     f"| {'; '.join(errs)[:80]} |")
     return "\n".join(rows)
