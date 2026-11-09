@@ -166,13 +166,21 @@ anything, then export, for example to numpy arrays or ONNX).
 ## For organisers
 
 ```bash
-scripts/grade_all.sh submissions/ arena.yaml results/ <secret seed>    # grade everyone, write the leaderboard
+python3 scripts/snapshot.py entries.tsv snapshots/                     # at the deadline: freeze every entry
+scripts/grade_all.sh snapshots/submissions arena.yaml results/ <secret seed>   # grade everyone, write the leaderboard
 ```
+
+`entries.tsv` lists `handle<TAB>repo URL`, one entry per line. Run the snapshot right at the deadline: git commit
+dates can be set to anything, so the commit that counts is the one fetched then. `snapshots/manifest.tsv` records
+each entry's commit, a hash of its files and the snapshot time; failed clones, missing `controller.py` and dropped
+symlinks are reported there rather than guessed.
 
 Keep `arena.yaml` and the seed private until results are announced (`arena*.yaml` is git-ignored). The script
 gives each entry the track and seed only on stdin, never as a file inside its container, and accepts a result
 only if it carries a valid signature from a one-time key, so an entry can neither read the arena from disk nor
-forge its score. Logs go to `results/logs/`.
+forge its score. Inside the container the grader also makes itself non-dumpable (the entry cannot open its memory
+or its stdin/stdout through `/proc`) and, between runs, kills every leftover process and empties `/tmp` and
+`/dev/shm`, so nothing an entry learns on one run carries over to the next. Logs go to `results/logs/`.
 
 ## Licence
 
