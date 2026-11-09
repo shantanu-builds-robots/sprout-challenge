@@ -18,7 +18,10 @@ results="$(mkdir -p "${3:-results}" && cd "${3:-results}" && pwd)"; seed="${4:-1
 repo="$(cd "$(dirname "$0")/.." && pwd)"
 docker image inspect sprout-challenge >/dev/null 2>&1 || docker build -q -f "$repo/docker/Dockerfile" -t sprout-challenge "$repo"
 logs="$results/logs"; mkdir -p "$logs"
-for dir in "$subs"/*/; do
+shopt -s nullglob
+entries=("$subs"/*/)
+[ ${#entries[@]} -gt 0 ] || { echo "no submission folders in $subs" >&2; exit 1; }
+for dir in "${entries[@]}"; do
     name="$(basename "$dir")"
     echo "== $name"
     key="$(python3 -c 'import secrets; print(secrets.token_hex(32))')"

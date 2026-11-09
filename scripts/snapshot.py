@@ -47,7 +47,8 @@ def files(folder: Path):
 
 
 def no_links(src, names):
-    return [n for n in names if n == ".git" or Path(src, n).is_symlink()]
+    """Skip .git, symlinks, and compiled Python: a bundled .pyc can run code that differs from the .py we review."""
+    return [n for n in names if n in (".git", "__pycache__") or n.endswith((".pyc", ".pyo")) or Path(src, n).is_symlink()]
 
 
 def tree_hash(folder: Path) -> str:
@@ -96,7 +97,16 @@ def main():
             if not re.match(r"^(https://|file://|/)", url):
                 raise ValueError("not an https:// repository URL")
             git("clone", "--quiet", "--no-recurse-submodules", url, str(dest))
-            commit = git("rev-parse", "HEAD", cwd=dest)
+            try:
+                commit = git("rev-parse", "HEAD", cwd=dest)
+            except subprocess.CalledProcessError:    # the remote's HEAD names a branch that doesn't exist
+                branches = git("for-each-ref", "--format=%(refname:short)", "refs/remotes/origin", cwd=dest).split()
+                branches = [b for b in branches if b != "origin/HEAD"]
+                pick = next((b for b in ("origin/main", "origin/master") if b in branches), branches[0] if branches else None)
+                if pick is None:
+                    raise ValueError("the repository has no commits")
+                git("checkout", "--quiet", "-B", pick.split("/", 1)[1], pick, cwd=dest)
+                commit = git("rev-parse", "HEAD", cwd=dest)
         except Exception as e:
             msg = getattr(e, "stderr", "") or str(e)
             lines = [ln for ln in str(msg).strip().splitlines() if ln.strip()]
