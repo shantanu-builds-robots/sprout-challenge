@@ -56,16 +56,16 @@
       <site name="imu" size="0.01" pos="0 0 0" />
       <geom name="torso" class="collision" type="box" size="0.5 0.25 0.1" contype="0" conaffinity="1"/>
       <geom name="torso_body" class="selfcol" type="box" size="0.5 0.25 0.1" contype="2" conaffinity="0"/>
-      <geom type="mesh" rgba="0 0.752941 0 1" mesh="body" class="visual" />
+      <geom type="mesh" rgba="0.133 0.773 0.369 1" mesh="body" class="visual" />
       <geom pos="0.4 -0.005 0.095" quat="0.707107 0.707107 0 0" type="mesh" rgba="0 0 0 1" mesh="camera" class="visual" />
       <body name="back_right_thigh" pos="-0.24995 -0.18 0" quat="0 0 -0.709831 0.704372">
         <inertial pos="0.0629098 0 0.0554258" quat="0.993254 0 0.115957 0" mass="0.6104" diaginertia="0.002768 0.002681 0.001408" />
         <joint name="back_right_thigh_joint" pos="0 0 0" axis="1 0 0" range="-1.57 1.57"  />
-        <geom type="mesh" rgba="0.25098 0.25098 0.25098 1" mesh="back_right_thigh" class="visual" />
+        <geom type="mesh" rgba="0.106 0.165 0.137 1" mesh="back_right_thigh" class="visual" />
         <body name="back_right_leg" pos="0.07005 0 0.070008" quat="-0.00392279 0.707097 0.00392277 0.707095">
           <inertial pos="0.0730353 -0.237418 6.51884e-09" quat="0.509262 0.490495 -0.509328 0.490563" mass="1.529" diaginertia="0.032 0.03194 0.003793" />
           <joint name="back_right_leg_joint" pos="0 0 0" axis="1 0 0" range="-1.57 1.57"  />
-          <geom type="mesh" rgba="0.501961 1 0.501961 1" mesh="back_right_leg" class="visual" />
+          <geom type="mesh" rgba="0.525 0.937 0.675 1" mesh="back_right_leg" class="visual" />
           <geom name="back_right_leg_col" class="collision" type="capsule" size="0.06" fromto="0.08 0.0 0 0.07 -0.50 0"/>
           <geom name="back_right_leg_body" class="selfcol" type="capsule" size="0.075" fromto="0.08 0.0 0 0.07 -0.50 0"/>
           <body name="back_right_shin" pos="0 -0.5 0" quat="0.00459773 0.999989 0 0">
@@ -82,11 +82,11 @@
       <body name="back_left_thigh" pos="-0.24995 0.18 0" quat="-2.62832e-06 -2.566e-06 0.698572 0.71554">
         <inertial pos="0.0629098 0 0.0554258" quat="0.993254 0 0.115957 0" mass="0.6104" diaginertia="0.002768 0.002681 0.001408" />
         <joint name="back_left_thigh_joint" pos="0 0 0" axis="-1 0 0" range="-1.57 1.57"  />
-        <geom type="mesh" rgba="0.25098 0.25098 0.25098 1" mesh="back_left_thigh" class="visual" />
+        <geom type="mesh" rgba="0.106 0.165 0.137 1" mesh="back_left_thigh" class="visual" />
         <body name="back_left_leg" pos="0.07005 0 0.0700804" quat="0.707086 0.00546207 -0.707086 0.00546206">
           <inertial pos="0.0729632 -0.237418 -5.14056e-09" quat="0.509261 0.490494 -0.509329 0.490564" mass="1.529" diaginertia="0.032 0.03194 0.003793" />
           <joint name="back_left_leg_joint" pos="0 0 0" axis="-1 0 0" range="-1.57 1.57"  />
-          <geom type="mesh" rgba="0.501961 1 0.501961 1" mesh="back_left_leg" class="visual" />
+          <geom type="mesh" rgba="0.525 0.937 0.675 1" mesh="back_left_leg" class="visual" />
           <geom name="back_left_leg_col" class="collision" type="capsule" size="0.06" fromto="0.08 0.0 0 0.07 -0.50 0"/>
           <geom name="back_left_leg_body" class="selfcol" type="capsule" size="0.075" fromto="0.08 0.0 0 0.07 -0.50 0"/>
           <body name="back_left_shin" pos="0 -0.5 0" quat="0.00510775 -0.999987 0 0">
@@ -103,11 +103,11 @@
       <body name="front_left_thigh" pos="0.24995 0.18 0" quat="0.717563 -0.696494 0 0">
         <inertial pos="0.0629098 0 0.0554258" quat="0.993254 0 0.115957 0" mass="0.6104" diaginertia="0.002768 0.002681 0.001408" />
         <joint name="front_left_thigh_joint" pos="0 0 0" axis="1 0 0" range="-1.57 1.57"  />
-        <geom type="mesh" rgba="0.25098 0.25098 0.25098 1" mesh="front_left_thigh" class="visual" />
+        <geom type="mesh" rgba="0.106 0.165 0.137 1" mesh="front_left_thigh" class="visual" />
         <body name="front_left_leg" pos="0.07005 0 0.0701239" quat="-0.00317285 -0.7071 0.00317286 -0.7071">
           <inertial pos="0.0729198 -0.237418 3.33459e-09" quat="0.509262 0.490495 -0.509328 0.490564" mass="1.529" diaginertia="0.032 0.03194 0.003793" />
           <joint name="front_left_leg_joint" pos="0 0 0" axis="-1 0 0" range="-1.57 1.57"  />
-          <geom type="mesh" rgba="0.501961 1 0.501961 1" mesh="front_left_leg" class="visual" />
+          <geom type="mesh" rgba="0.525 0.937 0.675 1" mesh="front_left_leg" class="visual" />
           <geom name="front_left_leg_col" class="collision" type="capsule" size="0.06" fromto="0.08 0.0 0 0.07 -0.50 0"/>
           <geom name="front_left_leg_body" class="selfcol" type="capsule" size="0.075" fromto="0.08 0.0 0 0.07 -0.50 0"/>
           <body name="front_left_shin" pos="0 -0.5 0" quat="0.0117301 -0.999931 0 0">
@@ -124,11 +124,11 @@
       <body name="front_right_thigh" pos="0.24995 -0.18 0" quat="0.705082 0.709126 0 0">
         <inertial pos="0.0629098 0 0.0554258" quat="0.993254 0 0.115957 0" mass="0.6104" diaginertia="0.002768 0.002681 0.001408" />
         <joint name="front_right_thigh_joint" pos="0 0 0" axis="-1 0 0" range="-1.57 1.57"  />
-        <geom type="mesh" rgba="0.25098 0.25098 0.25098 1" mesh="front_right_thigh" class="visual" />
+        <geom type="mesh" rgba="0.106 0.165 0.137 1" mesh="front_right_thigh" class="visual" />
         <body name="front_right_leg" pos="0.07005 0 0.0700046" quat="0.707082 0.00589294 -0.707082 0.00589293">
           <inertial pos="0.073039 -0.237418 -3.69308e-09" quat="0.509261 0.490494 -0.509328 0.490564" mass="1.529" diaginertia="0.032 0.03194 0.003793" />
           <joint name="front_right_leg_joint" pos="0 0 0" axis="1 0 0" range="-1.57 1.57"  />
-          <geom type="mesh" rgba="0.501961 1 0.501961 1" mesh="front_right_leg" class="visual" />
+          <geom type="mesh" rgba="0.525 0.937 0.675 1" mesh="front_right_leg" class="visual" />
           <geom name="front_right_leg_col" class="collision" type="capsule" size="0.06" fromto="0.08 0.0 0 0.07 -0.50 0"/>
           <geom name="front_right_leg_body" class="selfcol" type="capsule" size="0.075" fromto="0.08 0.0 0 0.07 -0.50 0"/>
           <body name="front_right_shin" pos="0 -0.5 0" quat="0.0155385 0.999879 0 0">

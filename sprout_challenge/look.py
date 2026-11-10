@@ -1,9 +1,9 @@
 """How a track looks: a colour texture painted onto the heightfield, one colour per section type.
 
 Purely visual (the physics never reads it). Painted from the track itself, so every track, including random and
-secret ones, gets the same look: each section type has its own colour, with darker 1 m grid lines for scale;
-stairs alternate shades step by step; hurdles and barriers are painted in yellow-and-black hazard stripes; a
-bridge's walkway is bright with darker ground on either side; a barrier's bypass lane is green.
+secret ones, gets the same look: each section type has its own colour, with faint darker 1 m grid lines for scale;
+stairs alternate shades step by step; hurdles and barriers are painted in green-and-black marker stripes; a
+bridge's walkway is bright with darker ground on either side; a barrier's bypass lane is a deeper green.
 """
 from __future__ import annotations
 
@@ -13,19 +13,19 @@ from .track import Track, barrier_span
 
 PX_PER_M = 20
 
-COLOURS = {                     # RGB 0..1
-    "flat": (0.30, 0.34, 0.42),
-    "rough": (0.55, 0.40, 0.26),
-    "stairs": (0.93, 0.55, 0.18),
-    "hurdles": (0.36, 0.30, 0.55),
-    "ramp": (0.55, 0.32, 0.70),
-    "bridge": (0.18, 0.62, 0.62),
-    "waves": (0.20, 0.45, 0.80),
-    "gap": (0.25, 0.25, 0.25),
-    "barrier": (0.36, 0.38, 0.46),
+COLOURS = {                     # RGB 0..1, the Night Lab palette
+    "flat": (0.165, 0.220, 0.200),
+    "rough": (0.212, 0.275, 0.247),
+    "stairs": (0.243, 0.322, 0.286),
+    "hurdles": (0.200, 0.263, 0.235),
+    "ramp": (0.271, 0.349, 0.310),
+    "bridge": (0.184, 0.369, 0.294),
+    "waves": (0.173, 0.290, 0.267),
+    "gap": (0.078, 0.110, 0.098),
+    "barrier": (0.165, 0.220, 0.200),
 }
-HAZARD = ((0.98, 0.80, 0.10), (0.08, 0.08, 0.08))
-BYPASS = (0.25, 0.70, 0.35)
+MARKER = ((0.204, 0.827, 0.6), (0.043, 0.082, 0.067))   # glowing green and near-black stripes
+BYPASS = (0.118, 0.361, 0.247)
 
 
 def texture(track: Track) -> np.ndarray:
@@ -53,7 +53,7 @@ def texture(track: Track) -> np.ndarray:
                 a = run_in + i * spacing
                 bar = sel & (u >= a - 0.02) & (u < a + thick + 0.02)
                 stripe = (np.floor((Y + 3) / 0.25).astype(int) % 2 == 0)
-                img[bar & stripe], img[bar & ~stripe] = HAZARD
+                img[bar & stripe], img[bar & ~stripe] = MARKER
         elif s["type"] == "bridge":
             walk = sel & (np.abs(Y) <= float(s.get("width", 1.0)) / 2)
             img[sel & ~walk] = np.array(COLOURS["flat"]) * 0.7
@@ -65,10 +65,10 @@ def texture(track: Track) -> np.ndarray:
             img[lane] = BYPASS
             block = sel & (u >= run_in - 0.02) & (u < run_in + depth + 0.02) & (Y >= y0) & (Y <= y1)
             stripe = (np.floor((X + Y) / 0.2).astype(int) % 2 == 0)
-            img[block & stripe], img[block & ~stripe] = HAZARD
+            img[block & stripe], img[block & ~stripe] = MARKER
     # 1 m grid lines, and a soft darkening towards the track's edges
     grid = (np.abs(X - np.round(X)) < 0.5 / PX_PER_M + 1e-9) | (np.abs(Y - np.round(Y)) < 0.5 / PX_PER_M + 1e-9)
-    img[grid] *= 0.75
+    img[grid] *= 0.85
     edge = np.clip(1.0 - (np.abs(Y) - (track.width / 2 - 0.4)) / 0.4 * 0.35, 0.65, 1.0)
     img *= edge[..., None]
     return np.clip(np.round(img * 255), 0, 255).astype(np.uint8)

@@ -83,15 +83,15 @@ def _scene_xml(track: Track, nrow: int, ncol: int, hmin: float, hrange: float, t
     robot = robot[:robot.rindex("</mujoco>")]
     return robot + f'''
   <visual>
-    <headlight diffuse="0.6 0.6 0.6" ambient="0.3 0.3 0.3" specular="0 0 0"/>
-    <rgba haze="0.15 0.25 0.35 1"/>
+    <headlight diffuse="0.55 0.55 0.55" ambient="0.25 0.25 0.25" specular="0 0 0"/>
+    <rgba haze="0.043 0.122 0.09 1"/>
     <global offwidth="1920" offheight="1080"/>
     <quality shadowsize="4096"/>
     <map zfar="300"/>
   </visual>
   <asset>
-    <texture type="skybox" builtin="gradient" rgb1="0.3 0.5 0.7" rgb2="0 0 0" width="512" height="3072"/>
-    <texture type="2d" name="ground" builtin="checker" mark="edge" rgb1="0.2 0.3 0.4" rgb2="0.1 0.2 0.3"
+    <texture type="skybox" builtin="gradient" rgb1="0.055 0.165 0.122" rgb2="0.008 0.031 0.024" width="512" height="3072"/>
+    <texture type="2d" name="ground" builtin="checker" mark="edge" rgb1="0.075 0.133 0.106" rgb2="0.055 0.098 0.078"
       markrgb="0.8 0.8 0.8" width="300" height="300"/>
     <material name="ground" texture="ground" texuniform="true" texrepeat="2 2" reflectance="0.1"/>
     <!-- Section colours (look.py), painted into this texture's pixels after loading. -->
