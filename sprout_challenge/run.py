@@ -66,7 +66,7 @@ def main():
     ap.add_argument("submission")
     ap.add_argument("--track", default="practice")
     ap.add_argument("--seed", type=int, default=0)
-    ap.add_argument("--no-random", action="store_true", help="nominal robot, no sensor noise")
+    ap.add_argument("--no-random", action="store_true", help="nominal robot and start (no randomisation)")
     ap.add_argument("--view", action="store_true")
     ap.add_argument("--video", default=None)
     ap.add_argument("--max-time", type=float, default=180.0)

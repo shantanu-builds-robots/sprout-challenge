@@ -14,8 +14,8 @@ The run ends when the robot
   - leaves the track: its centre gets within EDGE of the track's side;
   - or runs out of time.
 
-Each run can be randomised (as the grader does, with seeds participants don't see): foot friction, body mass,
-motor strength, sensor noise, and a slightly different starting position and heading.
+Each graded run starts from a slightly different position and heading (from seeds participants don't see); the
+robot itself is always the same. Friction, mass, motor strength and sensor noise can be varied for robustness testing.
 """
 from __future__ import annotations
 
@@ -42,20 +42,23 @@ SCAN_Y = np.linspace(-0.6, 0.6, 7)
 SCAN_POINTS = np.stack(np.meshgrid(SCAN_X, SCAN_Y, indexing="ij"), -1)        # (13, 7, 2)
 
 
+# Optional sensor noise (uniform, +- these amounts) for testing a controller against noisy sensors:
+# Randomization(noise=SENSOR_NOISE). The competition grades without it.
+SENSOR_NOISE = {"joint_pos": 0.01, "joint_vel": 0.2, "gyro": 0.05, "accelerometer": 0.2, "gravity": 0.02,
+                "base_lin_vel": 0.05, "position": 0.02, "yaw": 0.01, "height_scan": 0.01}
+
+
 @dataclass
 class Randomization:
-    """How much a randomised run varies. The grader uses these defaults."""
-    foot_friction: tuple = (0.6, 1.0)
-    mass_scale: tuple = (0.95, 1.05)
-    motor_scale: tuple = (0.95, 1.05)
-    start_offset: float = 0.05          # m, +- in y
-    start_yaw: float = 0.05             # rad, +-
-    noise: dict = None
-
-    def __post_init__(self):
-        if self.noise is None:
-            self.noise = {"joint_pos": 0.01, "joint_vel": 0.2, "gyro": 0.05, "accelerometer": 0.2, "gravity": 0.02,
-                          "base_lin_vel": 0.05, "position": 0.02, "yaw": 0.01, "height_scan": 0.01}
+    """How much a randomised run varies. The grader uses these defaults: only the start varies; the robot keeps the
+    model's friction, mass and motor strength, and the sensors are exact. The other fields are for testing a
+    controller's robustness, for example Randomization(foot_friction=(0.6, 1.0), mass_scale=(0.95, 1.05))."""
+    start_offset: float = 0.05              # m, +- in y
+    start_yaw: float = 0.05                 # rad, +-
+    foot_friction: tuple | None = None      # (low, high) sliding friction of the feet; None keeps the model's
+    mass_scale: tuple | None = None         # (low, high) factor on the torso's mass and inertia
+    motor_scale: tuple | None = None        # (low, high) factor on the motors' stiffness, damping and torque limit
+    noise: dict | None = None               # e.g. SENSOR_NOISE
 
 
 @dataclass
@@ -177,16 +180,19 @@ class Sim:
         y0 = yaw0 = 0.0
         if r is not None:
             u = self.rng.uniform
-            for g in self._foot_geoms:
-                m.geom_friction[g, 0] = u(*r.foot_friction)
-            s = u(*r.mass_scale)
-            m.body_mass[self._torso] *= s
-            m.body_inertia[self._torso] *= s
-            k = u(*r.motor_scale)
-            m.actuator_gainprm[:, 0] *= k
-            m.actuator_biasprm[:, 1:3] *= k
-            m.actuator_forcerange[:] *= k
             y0, yaw0 = u(-r.start_offset, r.start_offset), u(-r.start_yaw, r.start_yaw)
+            if r.foot_friction is not None:
+                for g in self._foot_geoms:
+                    m.geom_friction[g, 0] = u(*r.foot_friction)
+            if r.mass_scale is not None:
+                s = u(*r.mass_scale)
+                m.body_mass[self._torso] *= s
+                m.body_inertia[self._torso] *= s
+            if r.motor_scale is not None:
+                k = u(*r.motor_scale)
+                m.actuator_gainprm[:, 0] *= k
+                m.actuator_biasprm[:, 1:3] *= k
+                m.actuator_forcerange[:] *= k
             self.noise = r.noise
         else:
             self.noise = None

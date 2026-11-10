@@ -4,8 +4,8 @@
 
 SUBMISSION is a folder with controller.py (plus any files it loads), or a single .py file.
 
-Each run gets its own seed: foot friction, body mass, motor strength, sensor noise and the start pose all vary a
-little (sim.Randomization). A run's score is its finish time if it finished, else the distance it covered; any
+Each run gets its own seed, which moves the start a little (sim.Randomization): up to 5 cm sideways and 0.05 rad
+in heading, always facing the finish. The robot itself is the same in every run. A run's score is its finish time if it finished, else the distance it covered; any
 finish beats any non-finish. The entry's score is its median run, so one lucky or unlucky run does not decide it.
 
 Official grading (scripts/grade_all.sh) uses --stdin: the track, seed, run count and a one-time key arrive as
