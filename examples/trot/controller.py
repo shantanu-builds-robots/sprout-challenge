@@ -11,9 +11,10 @@ one side and shortening it on the other. Terrain: the foot lift grows with the h
 just ahead, so it steps over hurdles and up stairs.
 
 Balance: swing feet land further along the way the body is drifting (Raibert's foot-placement rule), and the
-legs on the high side shorten to keep the body level. Gains from a random search on the flat track.
+legs on the high side shorten to keep the body level. The numbers come from a search that kept it walking when
+any one of them changes by 10-20%, so you can tune them by hand; bigger or combined changes can still topple it.
 
-It is deliberately simple: it walks about 0.45 m/s on flat ground and has no foothold planning, so the
+It is deliberately simple: it walks about 0.6 m/s on flat ground and has no foothold planning, so the
 obstacles stop it. Beat it.
 """
 import numpy as np
@@ -27,12 +28,12 @@ LEFT = np.array([False, True, True, False])
 
 
 class Trot(Controller):
-    freq = 3.0          # Hz, steps per second per leg
-    stride = 0.083      # m, half the foot's sweep
-    lift = 0.136        # m, foot lift on flat ground
-    k_yaw, lean = 1.5, 0.4
-    k_place = 0.66      # s: foot placement per m/s of velocity error (Raibert's rule)
-    k_level = 0.28      # m of leg-length change per radian of body tilt
+    freq = 2.35         # Hz, steps per second per leg
+    stride = 0.1        # m, half the foot's sweep
+    lift = 0.205        # m, foot lift on flat ground
+    k_yaw, lean = 1.15, 0.46
+    k_place = 0.76      # s: foot placement per m/s of velocity error (Raibert's rule)
+    k_level = 0.37      # m of leg-length change per radian of body tilt
 
     def reset(self, info):
         self.pose = np.array(info["default_pose"], float)
