@@ -1,0 +1,53 @@
+/* Night Lab: deep green-black, glow green #34D399, lime #BEF264 for the prize, Sora headlines, Inter body. The cover
+   is dark; inner pages are light so the rulebook prints well. */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Sora:wght@600;700;800&display=swap');
+
+:root { --night: #07120D; --deep: #12241B; --glow: #34D399; --lime: #BEF264; --mint: #E8F5EE;
+        --ink: #0B1F17; --green: #0F7A55; --rule: #D5E5DC; --tint: #EEF7F2; }
+
+@page { size: A4; margin: 22mm 20mm 24mm 20mm;
+  @bottom-center { content: counter(page) " / " counter(pages); font: 9pt Inter, sans-serif; color: #6B8577; }
+  @top-right { content: "Sprout Challenge rulebook"; font: 600 8.5pt Sora, sans-serif; color: #0F7A55; letter-spacing: 0.4pt; } }
+@page cover { margin: 0; background: #07120D; @bottom-center { content: none; } @top-right { content: none; } }
+
+html { font: 10.5pt/1.55 Inter, 'DejaVu Sans', sans-serif; color: var(--ink); }
+
+.cover { page: cover; height: 297mm; color: var(--mint); position: relative; break-after: page; overflow: hidden;
+  background: #07120D; }
+.cover .hero { position: absolute; left: 0; width: 100%; top: 150mm; opacity: 0.92; }
+.cover .fade { position: absolute; left: 0; right: 0; top: 149mm; height: 55mm;
+  background: linear-gradient(180deg, #07120D 0%, rgba(7, 18, 13, 0.6) 45%, rgba(7, 18, 13, 0) 100%); }
+.cover .inner { position: absolute; left: 22mm; right: 22mm; top: 34mm; }
+.cover .kicker { display: inline-block; font: 600 9.5pt Sora, sans-serif; letter-spacing: 1.6pt; color: var(--glow);
+  background: rgba(52, 211, 153, 0.14); border: 0.8pt solid rgba(52, 211, 153, 0.5); border-radius: 20mm; padding: 1.6mm 4.5mm; }
+.cover h1 { font: 800 50pt/1 Sora, sans-serif; color: var(--mint); margin: 8mm 0 4mm; border: 0; letter-spacing: -1pt; }
+.cover .sub { font: 600 15pt/1.35 Sora, sans-serif; color: #A7C8B7; margin: 0 0 10mm; }
+.cover table { border-collapse: collapse; font-size: 10.5pt; width: auto; margin: 0; }
+.cover td { padding: 2.2mm 6mm 2.2mm 0; border: 0; border-bottom: 0.5pt solid rgba(232, 245, 238, 0.12); vertical-align: top; }
+.cover td:first-child { color: var(--glow); font: 600 9.5pt Sora, sans-serif; letter-spacing: 0.6pt; text-transform: uppercase;
+  white-space: nowrap; padding-top: 2.8mm; }
+.cover code { background: var(--deep); color: var(--lime); border: 0.5pt solid rgba(190, 242, 100, 0.35); }
+.cover .foot { position: absolute; left: 22mm; right: 22mm; bottom: 12mm; font-size: 8.5pt; color: #A7C8B7; background: rgba(7, 18, 13, 0.75); padding: 2mm 3mm; border-radius: 1.5mm; }
+.cover a { color: var(--mint); }
+
+h1 { font: 800 22pt Sora, sans-serif; margin: 0 0 4mm; }
+h2 { font: 700 15pt Sora, sans-serif; color: var(--ink); margin: 9mm 0 2.5mm; padding-left: 3.5mm;
+     border-left: 3pt solid var(--glow); break-after: avoid; }
+pre, table { break-before: avoid; }
+h3 { font: 700 11.5pt Sora, sans-serif; color: var(--green); margin: 6mm 0 1mm; break-after: avoid; }
+p, li { orphans: 3; widows: 3; }
+ul { padding-left: 5mm; } li { margin: 1mm 0; } li::marker { color: var(--green); }
+a { color: var(--green); text-decoration: none; border-bottom: 0.5pt solid rgba(15, 122, 85, 0.35); }
+strong { font-weight: 700; color: #062A1C; }
+code { font: 9pt 'JetBrains Mono', monospace; background: var(--tint); color: #0B4D36; padding: 0.3mm 1mm; border-radius: 1mm; }
+pre { background: var(--night); color: var(--mint); padding: 3.5mm 4mm; border-radius: 2mm; border-left: 2.5pt solid var(--glow);
+      white-space: pre-wrap; break-inside: avoid; font-size: 8pt; line-height: 1.45; }
+pre code { background: none; color: inherit; padding: 0; font-size: 8pt; }
+table { border-collapse: collapse; width: 100%; margin: 3mm 0; break-inside: avoid; }
+th { font: 600 8.5pt Sora, sans-serif; color: var(--green); text-transform: uppercase; letter-spacing: 0.5pt;
+     border-bottom: 1pt solid var(--glow); padding: 1.8mm 2.5mm 1.8mm 0; text-align: left; }
+td { border-bottom: 0.6pt solid var(--rule); padding: 1.8mm 2.5mm 1.8mm 0; text-align: left; vertical-align: top; }
+th:empty { display: none; }
+blockquote { margin: 3mm 0; padding: 2mm 4mm; background: var(--tint); border-left: 2.5pt solid var(--glow); }
+.toc { break-after: page; } .toc ol { line-height: 2; font-size: 11.5pt; } .toc li::marker { font-family: Sora; color: var(--green); }
+.toc a { border: 0; color: var(--ink); }

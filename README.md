@@ -13,14 +13,17 @@ model-predictive control, reinforcement learning, or something nobody has tried 
 | **Robot** | Sprout ([sprout-gym](https://github.com/shantanu-builds-robots/sprout-gym)), simulated in MuJoCo |
 | **Your job** | `act(observation) -> 12 joint targets`, called at 50 Hz |
 | **Practice** | the practice track in this repo, plus a generator for endless variations |
-| **Final** | a secret arena built from the same section types, revealed with the results |
-| **Prize** | $20 for the fastest robot (see [RULES.md](RULES.md)) |
+| **Final** | a secret arena: the practice track's sections, same sizes, in a different order; revealed with the results |
+| **Prize** | a $20 gift card for the fastest robot ([rulebook](RULES.md), also as a [PDF](RULES.pdf)) |
 
 ## Quick start
 
+New here? **[INSTALL.md](INSTALL.md)** walks you through installing on Linux, macOS or Windows and building your first
+entry step by step, and **[RULES.md](RULES.md)** is the rulebook. The short version:
+
 ```bash
 git clone https://github.com/shantanu-builds-robots/sprout-challenge && cd sprout-challenge
-pip install -e ".[video]"          # Python 3.10+; MuJoCo, numpy, PyYAML (+ imageio for videos)
+pip install -e ".[video]"          # Python 3.10-3.13, in a virtual environment; MuJoCo, numpy, PyYAML (+ imageio)
 
 python -m sprout_challenge.run examples/ppo_baseline --view                  # watch the baseline (needs a display)
 python -m sprout_challenge.run examples/trot --video trot.mp4                # or save a video
@@ -79,7 +82,7 @@ value keeps the previous target.
 
 ### What the controller sees
 
-`act(obs)` gets an `Observation` ([sim.py](sprout_challenge/sim.py)) with sensor noise on:
+`act(obs)` gets an `Observation` ([sim.py](sprout_challenge/sim.py)). The readings are exact (no sensor noise):
 
 | Field | Shape | Meaning |
 |---|---|---|
@@ -124,8 +127,8 @@ python -m sprout_challenge.track --seed 7 --difficulty 0.8 --out my_track.yaml
 python -m sprout_challenge.grade my_entry --track my_track.yaml
 ```
 
-The final arena uses the same section types with different sizes and order, so practise on variations, not
-only on the practice track.
+The final arena has exactly the practice track's sections and sizes, and its one barrier, in a different order.
+Don't rely on where things are on the practice track: practise on reordered copies of it too.
 
 ### Barriers: jump or go around
 
@@ -142,8 +145,9 @@ The route is decided where the torso passes the barrier's middle. Bonuses count 
 
 ## Scoring
 
-Each entry runs **5 times** on the arena. Every run is slightly different: foot friction (0.6–1.0), body mass
-(±5%), motor strength (±5%), sensor noise and the start position all vary, from seeds only the organisers know.
+Each entry runs **5 times** on the arena. The robot is the same in every run; only its start moves a little (up to
+5 cm sideways and 3° in heading, always facing the finish), from seeds only the organisers know. Every entry gets
+the same 5 starts. Sensors are exact.
 
 - A run that finishes scores its **finish time minus any barrier bonuses**; one that doesn't scores the
   **distance** it covered. Any finish beats any non-finish.
