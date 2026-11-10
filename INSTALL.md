@@ -210,8 +210,8 @@ computer, the container's is the one that counts.
 
    Check on GitHub that `controller.py` and every file it loads are there. Files ignored by a `.gitignore` (weights
    often are) won't be uploaded.
-3. **DM the repository link** to [@shantanu.builds.robots](https://www.instagram.com/shantanu.builds.robots/) on
-   Instagram.
+3. **Fill in the [entry form](https://shantanu-builds-robots.github.io/ig/sprout-challenge/#submit)** with your name, Instagram handle, a backup contact and the
+   repository link.
 
 You can keep improving it: push again any time before **30 November 2026, 23:59 IST**. Whatever is in the
 repository at the deadline is what gets graded.

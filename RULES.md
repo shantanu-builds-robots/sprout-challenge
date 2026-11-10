@@ -20,7 +20,7 @@ Setting up your computer is covered in [INSTALL.md](INSTALL.md); the robot, its 
 
 | | |
 |---|---|
-| **Opens** | the day the announcement reel is posted on Instagram. The practice track and all the tools are public from then. |
+| **Opens** | 11 November 2026. The practice track, all the tools and the entry form are public from then. |
 | **Deadline** | **30 November 2026, 23:59 IST (UTC+5:30)**, which is 18:29 UTC. Late entries are not graded. |
 | **Results** | by 3 December 2026, on Instagram. The competition arena and the grading seeds are published with the results. |
 
@@ -62,7 +62,10 @@ finishes the practice track.
 
 1. Put your submission in a public GitHub repository (see section 3).
 2. Check it in the grading container (section 9), so you know it runs the way the judges will run it.
-3. **DM [@shantanu.builds.robots](https://www.instagram.com/shantanu.builds.robots/) the link to the repository.**
+3. **Fill in the [entry form](https://shantanu-builds-robots.github.io/ig/sprout-challenge/#submit)** (linked on the challenge page): your name, your Instagram handle, a
+   backup contact for the results (email or phone), the link to your repository, and your team members if you
+   enter as a team. If you send the form more than once, your latest response counts. The form closes at the
+   deadline.
 
 You may keep pushing changes until the deadline. The version that counts is **the one in the repository when it is
 collected at the deadline**: every entry is cloned right after 23:59 IST on 30 November, and the exact commit taken
@@ -207,8 +210,8 @@ container's result is the one that counts.
 
 - **One $20 gift card** (Amazon, or an equivalent gift card available in the winner's country) for the entry with
   the best score on the competition arena. There are no runner-up prizes.
-- The winner is announced on Instagram and contacted by DM. The gift card is sent within 14 days of the results, to
-  an email address the winner gives by DM.
+- The winner is announced on Instagram and contacted by DM, or at the backup contact from the entry form if a DM
+  gets no answer. The gift card is sent within 14 days of the results, to an email address the winner gives.
 - If the winner doesn't reply within 14 days of being contacted, the prize goes to the next-best entry.
 - The prize can't be exchanged for cash.
 - The **top 10** entries on the leaderboard get a video of their run featured on
